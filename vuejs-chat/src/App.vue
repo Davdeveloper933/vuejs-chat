@@ -1,49 +1,59 @@
 <template>
   <div id="app">
-    <h2>Vue.js WebSocket Tutorial</h2>
-    <button v-on:click="sendMessage(JSON.stringify(data))">Send Message</button>
+    <Header/>
+      <button v-on:click="sendMessage">send</button>
+    <Footer/>
   </div>
 </template>
 
 <script>
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 export default {
   name: 'App',
-  data: function() {
+  components: {Footer, Header},
+  data: function () {
     return {
       connection: null,
-      data:'hello'
+      data: [
+        {
+          name: 'david',
+          message: 'hello'
+        }
+      ]
     }
   },
   methods: {
-    sendMessage: function(message) {
-      console.log(this.connection);
-      this.connection.send(message);
+    sendMessage:function () {
+      this.connection.send(JSON.stringify(this.data))
     }
+
   },
-  created: function() {
-    console.log("Starting connection to WebSocket Server")
-    this.connection = new WebSocket("ws://skade.cc:38080")
+  created:function () {
 
-    this.connection.onmessage = function(event) {
-      console.log(`onmessage = ${event.data}`);
+  },
+  mounted:function () {
+    this.connection = new WebSocket(`ws://skade.cc:38080`);
+    this.connection.onopen = function (){
+      console.log('connected')
     }
-
-    this.connection.onopen = function(event) {
-      console.log(`onopen = ${event.data}`)
-      console.log("Successfully connected to the echo websocket server...")
+    this.connection.addEventListener('message',function (event){
+      alert(event.data)
+    })
+    this.connection.onerror = function (error) {
+      alert(error.data)
     }
-
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+/*#app {*/
+/*  font-family: Avenir, Helvetica, Arial, sans-serif;*/
+/*  -webkit-font-smoothing: antialiased;*/
+/*  -moz-osx-font-smoothing: grayscale;*/
+/*  text-align: center;*/
+/*  color: #2c3e50;*/
+/*  margin-top: 60px;*/
+/*}*/
 </style>
