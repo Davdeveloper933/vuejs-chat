@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header/>
-      <button v-on:click="sendMessage">send</button>
+      <button v-on:click="sendMessage(JSON.stringify(data))">send</button>
     <Footer/>
   </div>
 </template>
@@ -15,34 +15,34 @@ export default {
   data: function () {
     return {
       connection: null,
-      data: [
+      data:
         {
-          name: 'david',
+          name: 'John',
           message: 'hello'
         }
-      ]
     }
   },
   methods: {
-    sendMessage:function () {
-      this.connection.send(JSON.stringify(this.data))
-    }
+    sendMessage:function (a) {
 
+      this.connection.send(a)
+    }
   },
   created:function () {
-
+    this.connection = new WebSocket(`wss://echo.websocket.org`);
   },
   mounted:function () {
-    this.connection = new WebSocket(`ws://skade.cc:38080`);
-    this.connection.onopen = function (){
+    this.connection.addEventListener('open', function () {
       console.log('connected')
+    })
+    this.connection.onerror = function () {
+      alert('error')
     }
     this.connection.addEventListener('message',function (event){
-      alert(event.data)
+      let data = JSON.parse(event.data)
+      alert(`Hello, ${data.name}!`)
+      console.log( data.name)
     })
-    this.connection.onerror = function (error) {
-      alert(error.data)
-    }
   }
 }
 </script>
