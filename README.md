@@ -13,6 +13,7 @@ npm install
 ```
 npm run serve
 ```
+#Enjoy it!
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
