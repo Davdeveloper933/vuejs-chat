@@ -16,7 +16,7 @@
           <div class="droplist">
             <div class="title">Логин</div>
             <ul class="list">
-              <li><a href="#">История</a></li>
+              <li><router-link :to="{ name: 'History'}">История</router-link></li>
               <li><a href="#">Настройки</a></li>
               <li><a href="#">Выход</a></li>
             </ul>
