@@ -1,5 +1,9 @@
 # vuejs-chat
 
+## Download on your machine
+```
+git clone [link]
+```
 ## Project setup
 ```
 npm install
