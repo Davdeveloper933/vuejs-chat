@@ -10,12 +10,14 @@ export default new Vuex.Store({
         messages:[], // сообщения,которые передаются/принимаются
         connection:null, // обьект вебсокета
         response:{}, // ответ от сервера
-        history:[] // история сообщений
+        history:[], // история сообщений
+        connected:false
     },
     getters:{
         webSocket:state => state.connection,
         messages:state => state.messages,
-        response:state => state.response
+        response:state => state.response,
+        getConnectedStatus:state => state.connected
     },
     mutations: {
         createSocket(state) { // соединение с сервером
@@ -25,6 +27,12 @@ export default new Vuex.Store({
                 state.connection = null
                 setTimeout(this.state.createSocket, 1000)
             }
+        },
+        connectedStatus(state) {
+            state.connection.addEventListener('open',function () {
+                state.connected = true; // установка соединения
+                console.log(state.connected)
+            })
         },
         // создание истории сообщений
         makeHistory(state,message) {

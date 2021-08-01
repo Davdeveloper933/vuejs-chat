@@ -18,14 +18,13 @@ export default {
   data(){
     return {
       textarea:'',
-      connected:false
     }
   },
   methods:{
-    ...mapMutations(['createSocket','getCurrentTime','makeHistory']),
+    ...mapMutations(['createSocket','getCurrentTime','makeHistory','connectedStatus']),
     // отправка сообщения серверу от клиента
     sendMessage() {
-      if(this.connected && this.textarea){ // проверка подключения и заполненного поля
+      if(this.getConnectedStatus && this.textarea){ // проверка подключения и заполненного поля
         let message = {
           text:this.textarea,
           name:'Давид',
@@ -43,18 +42,14 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['webSocket','messages','response'])
+    ...mapGetters(['webSocket','messages','response','getConnectedStatus'])
   },
   created:function () {
     this.createSocket() // соединение
   },
   mounted() {
     console.log(this.messages)
-    let self = this; // = vue data object
-    this.webSocket.addEventListener('open',function () {
-      self.connected = true; // установка соединения
-      console.log(self.connected)
-    })
+    this.connectedStatus();
     console.log(this.messages)
   }
 }
