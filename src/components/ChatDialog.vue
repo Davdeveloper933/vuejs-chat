@@ -58,9 +58,7 @@ export default {
   mounted() {
     let self = this; // то же самое,что и data
     // получение и обработка ответа от сервера
-    setTimeout(function () {
-
-      self.webSocket.onmessage = function (event) {
+      this.webSocket.onmessage = function (event) {
         self.response = JSON.parse(event.data);
         self.getCurrentTime(self.response);
         self.response.from = 'server';
@@ -69,7 +67,6 @@ export default {
         self.makeHistory(self.response); // добавление сообщения в историю сообщений
         console.log('history', self.$store.state.history) // чисто для проверки
       }
-    },5000)
   }
 }
 </script>
